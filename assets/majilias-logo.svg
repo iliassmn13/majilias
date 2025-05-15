@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="200" height="50" viewBox="0 0 200 50" xmlns="http://www.w3.org/2000/svg">
+    <g>
+        <!-- Arrow Icon -->
+        <path d="M30 40 L40 25 L30 10 M30 25 L10 25" 
+              fill="none" 
+              stroke="#0A2463" 
+              stroke-width="3"
+              stroke-linecap="round"
+              stroke-linejoin="round"/>
+        <!-- Text -->
+        <text x="60" y="32" 
+              font-family="Arial, sans-serif" 
+              font-size="24" 
+              font-weight="bold"
+              fill="#0A2463">
+            MAJILIAS
+        </text>
+        <text x="160" y="32" 
+              font-family="Arial, sans-serif" 
+              font-size="24" 
+              font-weight="bold"
+              fill="#FB3640">
+            INC
+        </text>
+    </g>
+</svg> 

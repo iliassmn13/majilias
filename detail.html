@@ -1,0 +1,854 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Détail | Majilias</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-blue: #0A2463;
+            --secondary-blue: #3E5C76;
+            --accent-orange: #FB3640;
+            --light-gray: #F5F5F5;
+            --dark-gray: #333333;
+            --white: #FFFFFF;
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Montserrat', 'Lato', 'Inter', Arial, sans-serif;
+        }
+        body {
+            line-height: 1.6;
+            color: var(--dark-gray);
+            background-color: var(--white);
+        }
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        /* Header & Navigation */
+        header {
+            background-color: var(--white);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+            height: 80px;
+        }
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary-blue);
+        }
+        .logo span {
+            color: var(--accent-orange);
+        }
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+        .nav-links a {
+            text-decoration: none;
+            color: var(--primary-blue);
+            font-weight: 500;
+            font-size: 1.1rem;
+            transition: color 0.3s;
+            position: relative;
+        }
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--accent-orange);
+            transition: width 0.3s;
+        }
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+        .nav-links a.active {
+            color: var(--accent-orange);
+        }
+        .nav-links a.active::after {
+            width: 100%;
+        }
+        .language-toggle {
+            display: flex;
+            gap: 1rem;
+            margin-left: 2rem;
+        }
+        .language-toggle button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0.5rem 1rem;
+            font-weight: 500;
+            font-size: 1rem;
+            color: var(--primary-blue);
+            transition: all 0.3s;
+        }
+        .language-toggle button.active {
+            color: var(--accent-orange);
+            border-bottom: 2px solid var(--accent-orange);
+        }
+        .hamburger {
+            display: none;
+            cursor: pointer;
+        }
+        /* Footer */
+        footer {
+            background-color: var(--primary-blue);
+            color: var(--white);
+            padding: 2rem 0;
+            text-align: center;
+        }
+        .footer-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1.2rem;
+        }
+        .footer-logo {
+            font-size: 1.7rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            letter-spacing: 1px;
+        }
+        .footer-logo span {
+            color: var(--accent-orange);
+        }
+        .footer-links {
+            display: flex;
+            list-style: none;
+            margin-bottom: 0.5rem;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1.5rem;
+            font-size: 1.1rem;
+        }
+        .footer-links a {
+            color: var(--white);
+            text-decoration: none;
+            transition: color 0.3s;
+            position: relative;
+            padding: 0 0.5rem;
+        }
+        .footer-links a:not(:last-child)::after {
+            content: '•';
+            color: var(--accent-orange);
+            margin-left: 1.5rem;
+            margin-right: 0.5rem;
+            font-size: 1.2em;
+            vertical-align: middle;
+        }
+        .footer-links a:hover {
+            color: var(--accent-orange);
+        }
+        .copyright {
+            font-size: 0.95rem;
+            opacity: 0.85;
+            margin-top: 0.5rem;
+        }
+        @media (max-width: 600px) {
+            .footer-links {
+                flex-direction: column;
+                gap: 0.7rem;
+            }
+            .footer-links a:not(:last-child)::after {
+                content: '';
+                margin: 0;
+            }
+        }
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-links {
+                position: fixed;
+                top: 70px;
+                left: -100%;
+                width: 100%;
+                height: calc(100vh - 70px);
+                background-color: var(--white);
+                flex-direction: column;
+                align-items: center;
+                padding-top: 2rem;
+                transition: left 0.3s;
+            }
+            .nav-links.active {
+                left: 0;
+            }
+            .nav-links li {
+                margin: 1rem 0;
+            }
+            .hamburger {
+                display: block;
+            }
+        }
+        /* Logo Styles */
+        .logo img {
+            height: 65px;
+            width: auto;
+            transition: transform 0.3s ease;
+        }
+        .logo img:hover {
+            transform: scale(1.05);
+        }
+        .back-link {
+            display: inline-block;
+            margin-bottom: 2rem;
+            color: #0A2463;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.2s;
+        }
+        .back-link:hover {
+            color: #FB3640;
+        }
+        .detail-title {
+            color: #0A2463;
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            margin-top: 3.5rem;
+        }
+        .detail-subtitle {
+            color: #FB3640;
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+        }
+        .detail-images {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        .detail-images img {
+            border-radius: 10px;
+            max-width: 100%;
+            max-height: 260px;
+            box-shadow: 0 2px 12px rgba(10,36,99,0.08);
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+        .detail-images img:hover {
+            transform: scale(1.05);
+        }
+        .detail-content {
+            font-size: 1.13rem;
+            line-height: 1.7;
+            margin-bottom: 3.5rem;
+            text-align: justify;
+        }
+        .detail-content p {
+            margin-bottom: 1.3em;
+        }
+        @media (max-width: 700px) {
+            .container {
+                padding: 1.2rem 0.5rem;
+            }
+            .detail-title {
+                font-size: 1.3rem;
+            }
+            .detail-images {
+                flex-direction: column;
+            }
+        }
+        /* Gallery Modal Styles */
+        .gallery-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            z-index: 3000;
+            overflow: hidden;
+        }
+        .gallery-modal-content {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .gallery-modal-content img {
+            max-width: 90%;
+            max-height: 90vh;
+            object-fit: contain;
+            border-radius: 4px;
+        }
+        .gallery-close {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            color: var(--white);
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+            z-index: 3001;
+        }
+        .gallery-nav {
+            position: absolute;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 3001;
+        }
+        .gallery-nav button {
+            background: none;
+            border: none;
+            color: var(--white);
+            font-size: 30px;
+            cursor: pointer;
+            padding: 10px;
+            opacity: 0.7;
+            transition: opacity 0.3s;
+        }
+        .gallery-nav button:hover {
+            opacity: 1;
+        }
+        .gallery-nav button:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header & Navigation -->
+    <header>
+        <div class="container">
+            <nav>
+                <div class="logo">
+                    <a href="index.html#home">
+                        <img src="assets/logo-majilias.png" alt="Majilias Inc Logo">
+                    </a>
+                </div>
+                <ul class="nav-links">
+                    <li><a href="index.html#home" data-i18n="home">Accueil</a></li>
+                    <li><a href="index.html#about" data-i18n="about">À propos</a></li>
+                    <li><a href="index.html#services" data-i18n="services">Services</a></li>
+                    <li><a href="index.html#contact" data-i18n="contact">Nous contacter</a></li>
+                </ul>
+                <div class="language-toggle">
+                    <button class="active" id="lang-fr">FR</button>
+                    <button id="lang-en">EN</button>
+                </div>
+                <div class="hamburger">
+                    <i class="fas fa-bars"></i>
+                </div>
+            </nav>
+        </div>
+    </header>
+    <div class="container">
+        <a href="index.html" class="back-link"><i class="fas fa-arrow-left"></i> Retour</a>
+        <h1 class="detail-title" id="detail-title" style="margin-top: 5.5rem;"></h1>
+        <div class="detail-subtitle" id="detail-subtitle"></div>
+        <div class="detail-images" id="detail-images"></div>
+        <div class="detail-content" id="detail-content"></div>
+    </div>
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">Majilias<span>inc</span></div>
+                <nav class="footer-links">
+                    <a href="index.html#home" data-i18n="home">Accueil</a>
+                    <a href="index.html#about" data-i18n="about">À propos</a>
+                    <a href="index.html#services" data-i18n="services">Services</a>
+                    <a href="index.html#contact" data-i18n="contact">Nous contacter</a>
+                </nav>
+                <div class="copyright" data-i18n="copyright">© 2023 Majilias Inc. Tous droits réservés.</div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Gallery Modal -->
+    <div id="gallery-modal" class="gallery-modal">
+        <div class="gallery-modal-content">
+            <span class="gallery-close">&times;</span>
+            <div class="gallery-nav">
+                <button id="prev-image" aria-label="Image précédente">&lt;</button>
+                <button id="next-image" aria-label="Image suivante">&gt;</button>
+            </div>
+            <img id="gallery-image" src="" alt="">
+        </div>
+    </div>
+
+    <script>
+const details = {
+    // Services
+    service1: {
+        fr: {
+            title: "1. Études de faisabilité (préliminaire & bancable)",
+            subtitle: "",
+            images: ["assets/feasibility-study.jpg"],
+            content: `<p>Nous réalisons des études de faisabilité techniques, économiques, environnementales et réglementaires, indispensables pour orienter vos décisions stratégiques.</p>
+<ul><li><b>Études préliminaires :</b> elles permettent d'avoir une première vision globale du projet, d'identifier les principales contraintes et opportunités, et d'évaluer la faisabilité technique avec une estimation de coûts.</li>
+<p></p>
+<li><b>Études de faisabilité bancables :</b> ces études approfondies répondent aux normes exigées par les banques, les investisseurs et les partenaires techniques. Elles incluent des analyses de risques, des modèles financiers détaillés, des plans d'investissement, et des prévisions de rentabilité.</li></ul>`
+        },
+        en: {
+            title: "1. Feasibility Studies (Preliminary & Bankable)",
+            subtitle: "",
+            images: ["assets/feasibility-study.jpg"],
+            content: `<p>We carry out technical, economic, environmental, and regulatory feasibility studies, essential for guiding your strategic decisions.</p>
+<ul><li><b>Preliminary studies:</b> These provide an initial global vision of the project, help identify the main constraints and opportunities, and assess technical feasibility with a cost estimate.</li>
+<p></p>
+<li><b>Bankable feasibility studies:</b> These in-depth studies meet the standards required by banks, investors, and technical partners. They include risk analyses, detailed financial models, investment plans, and profitability forecasts.</li></ul>`
+        }
+    },
+    service2: {
+        fr: {
+            title: "Planification stratégique et plans d'affaires",
+            subtitle: "",
+            images: ["assets/strategic-planning.png"],
+            content: `<p>Nous aidons les entreprises industrielles à définir leur vision, fixer leurs objectifs et construire des plans d'action clairs et réalisables.</p>
+<p><b>Plan stratégique :</b> alignement des ressources avec les priorités de croissance, analyse SWOT, évaluation des marchés cibles, définition d'objectifs mesurables et mise en place de KPIs.</p>
+<p><b>Plan d'affaires (business plan) :</b> indispensable pour lever des fonds ou lancer un nouveau projet, il comprend l'étude de marché, le modèle économique, les projections financières, et la stratégie de mise en œuvre.</p>`
+        },
+        en: {
+            title: "Strategic Planning and Business Plans",
+            subtitle: "",
+            images: ["assets/strategic-planning.png"],
+            content: `<p>We help industrial companies define their vision, set their objectives, and build clear, actionable plans.</p>
+<p><b>Strategic plan:</b> Aligning resources with growth priorities, SWOT analysis, target market evaluation, definition of measurable objectives, and implementation of KPIs.</p>
+<p><b>Business plan:</b> Essential for raising funds or launching a new project, it includes market research, the business model, financial projections, and the implementation strategy.</p>`
+        }
+    },
+    service3: {
+        fr: {
+            title: "Business Finder, Joint Venture, Partenariats et Fusions & Acquisitions",
+            subtitle: "",
+            images: ["assets/business-partnership.jpg"],
+            content: `<p>Nous vous accompagnons dans la recherche et la concrétisation d'opportunités d'affaires à fort potentiel à travers nos services spécialisés.</p>
+<p>Grâce à notre Business Finder, nous identifions pour vous des entreprises, projets ou partenaires stratégiques adaptés à vos objectifs de développement. Nous facilitons également la création de Joint Ventures en réunissant des partenaires complémentaires autour de projets communs à forte valeur ajoutée.</p>
+<p>Nos services de Partenariat visent à établir des alliances solides et durables, basées sur la complémentarité des expertises et le partage des ressources. Enfin, nous vous conseillons et vous assistons tout au long des processus de Fusions & Acquisitions, en évaluant les synergies potentielles, en menant les négociations et en sécurisant les transactions pour maximiser la création de valeur. Notre expertise vous permet de croître, de vous diversifier et de réussir vos projets stratégiques avec confiance.</p>`
+        },
+        en: {
+            title: "Business Finder, Joint Venture, Partnerships & Mergers & Acquisitions",
+            subtitle: "",
+            images: ["assets/business-partnership.jpg"],
+            content: `<p>We support you in finding and realizing high-potential business opportunities through our specialized services.</p>
+<p>With our Business Finder, we identify companies, projects, or strategic partners tailored to your development objectives. We also facilitate the creation of Joint Ventures by bringing together complementary partners around high-value-added common projects.</p>
+<p>Our Partnership services aim to establish strong and lasting alliances, based on complementary expertise and resource sharing. Finally, we advise and assist you throughout the Mergers & Acquisitions process, evaluating potential synergies, leading negotiations, and securing transactions to maximize value creation. Our expertise enables you to grow, diversify, and successfully achieve your strategic projects with confidence.</p>`
+        }
+    },
+    service4: {
+        fr: {
+            title: "Analyse des performances et optimisation des usines",
+            subtitle: "",
+            images: ["assets/plant-optimization-1.jpg", "assets/plant-optimization-2.jpeg"],
+            content: `<p>Nous intervenons au cœur de vos installations pour analyser les dysfonctionnements, améliorer le rendement, réduire les pertes et maximiser la rentabilité.</p>
+<p>Nos services incluent :</p>
+<ul>
+<li>Analyse de performance des lignes de production,</li>
+<li>Propositions d'amélioration continue,</li>
+<li>Études de revamping (modernisation partielle ou complète des équipements),</li>
+<li>Solutions pour l'extension des capacités de production,</li>
+<li>Diagnostic de la rentabilité par poste ou processus</li>
+</ul>
+<p></p>`
+        },
+        en: {
+            title: "Plant Performance Analysis and Optimization",
+            subtitle: "",
+            images: ["assets/plant-optimization-1.jpg", "assets/plant-optimization-2.jpeg"],
+            content: `<p>We intervene at the heart of your facilities to analyze malfunctions, improve efficiency, reduce losses, and maximize profitability.</p>
+<p>Our services include:</p>
+<ul>
+<li>Production line performance analysis,</li>
+<li>Continuous improvement proposals,</li>
+<li>Revamping studies (partial or complete modernization of equipment),</li>
+<li>Solutions for increasing production capacity,</li>
+<li>Profitability diagnostics by workstation or process</li>
+</ul>
+<p></p>`
+        }
+    },
+    service5: {
+        fr: {
+            title: "Gestion de projets industriels",
+            subtitle: "",
+            images: ["assets/project-management.jpg"],
+            content: `<p>Nous assurons une gestion de projet complète, structurée et maîtrisée, de l'étude d'ingénierie à la livraison clé en main.</p>
+<p>Nos prestations couvrent :</p>
+<ul>
+<li>Planification et suivi des délais,</li>
+<li>Coordination des équipes et sous-traitants,</li>
+<li>Maîtrise des coûts et gestion des risques,</li>
+<li>Interface client-fournisseur pour une communication fluide.</li>
+</ul>
+<p></p>
+<p>Nous prenons en charge le commissioning (mise en service) des installations, une étape cruciale garantissant leur bon fonctionnement avant l'exploitation.</p>
+<p>En mode EPCM (Engineering, Procurement, Construction Management), nous gérons :</p>
+<ul>
+<li>La conception détaillée des installations,</li>
+<li>La sélection et l'approvisionnement des équipements,</li>
+<li>La gestion des travaux et du personnel de chantier,</li>
+<li>La supervision des tests et de la mise en marche.</li>
+</ul>
+<p></p>`
+        },
+        en: {
+            title: "Industrial Project Management",
+            subtitle: "",
+            images: ["assets/project-management.jpg"],
+            content: `<p>We provide complete, structured, and controlled project management, from engineering studies to turnkey delivery.</p>
+<p>Our services cover:</p>
+<ul>
+<li>Scheduling and deadline monitoring,</li>
+<li>Coordination of teams and subcontractors,</li>
+<li>Cost control and risk management,</li>
+<li>Client-supplier interface for smooth communication.</li>
+</ul>
+<p></p>
+<p>We handle the commissioning of facilities, a crucial step to ensure their proper operation before production.</p>
+<p>In EPCM mode (Engineering, Procurement, Construction Management), we manage:</p>
+<ul>
+<li>Detailed design of facilities,</li>
+<li>Selection and procurement of equipment,</li>
+<li>Management of construction work and site personnel,</li>
+<li>Supervision of testing and commissioning.</li>
+</ul>
+<p></p>`
+        }
+    },
+    // Projets
+    project1: {
+        fr: {
+            title: "De la Diversification Minière à l'Agribusiness: Découvrez comment j'ai su transformer les défis en opportunités stratégiques au sein de Great Quest Metal Ltd",
+            subtitle: "",
+            images: [
+                "assets/great-quest-1.png",
+                "assets/great-quest-2.jpeg"
+            ],
+            content: `<p>Au sein de la société canadienne Great Quest Metal Ltd, que j'ai intégrée en 2011 en tant que Chief Operating Officer, j'ai joué un rôle clé dans la diversification de ses activités au Mali.</p>
+<p>À cette époque, la société, après avoir vendu un important gisement d'or, devait attirer de nouveaux investisseurs dans un contexte moins favorable à l'exploration aurifère. Sous ma direction, nous avons élargi notre champ d'action en acquérant un gisement de phosphate à la suite d'un appel d'offre gouvernemental. J'ai supervisé les programmes d'identification des ressources, les études de faisabilité et la mise en place d'un pilote industriel.</p>
+<p>Nous avons également développé et innové des formulations d'engrais adaptées au marché local, menant un programme d'essais agricoles sur quatre ans pour valider leur efficacité auprès des agriculteurs.</p>
+<p>Cette expérience m'a conduit à élaborer une stratégie de développement de gisements de phosphate à petite échelle pour le marché africain. Parallèlement, Great Quest a poursuivi son exploration aurifère et détient aujourd'hui deux gisements majeurs au Mali et en Namibie.</p>
+<p>Mon rôle au sein de l'entreprise m'a également permis d'approfondir ma connaissance de l'agribusiness en Afrique de l'Ouest, aboutissant à la création d'une usine de valorisation de cajou en Côte d'Ivoire. Cette dernière a ensuite été cédée à un actionnaire, conformément à la volonté des investisseurs de recentrer l'entreprise sur son cœur de métier : l'exploration aurifère.</p>`
+        },
+        en: {
+            title: "From Mining Diversification to Agribusiness: How I Turned Challenges into Strategic Opportunities at Great Quest Metal Ltd",
+            subtitle: "",
+            images: [
+                "assets/great-quest-1.png",
+                "assets/great-quest-2.jpeg"
+            ],
+            content: `<p>Within the Canadian company Great Quest Metal Ltd, which I joined in 2011 as Chief Operating Officer, I played a key role in diversifying its activities in Mali.</p>
+<p>At that time, the company, after selling a major gold deposit, needed to attract new investors in a less favorable context for gold exploration. Under my leadership, we expanded our scope by acquiring a phosphate deposit following a government tender. I supervised resource identification programs, feasibility studies, and the implementation of an industrial pilot.</p>
+<p>We also developed and innovated fertilizer formulations tailored to the local market, leading a four-year agricultural testing program to validate their effectiveness with farmers.</p>
+<p>This experience led me to develop a strategy for small-scale phosphate deposit development for the African market. Meanwhile, Great Quest continued its gold exploration and now holds two major deposits in Mali and Namibia.</p>
+<p>My role within the company also allowed me to deepen my knowledge of agribusiness in West Africa, resulting in the creation of a cashew processing plant in Côte d'Ivoire. This plant was later sold to a shareholder, in line with the investors' desire to refocus the company on its core business: gold exploration.</p>`
+        }
+    },
+    project2: {
+        fr: {
+            title: "Pilotage stratégique du redémarrage et de l'expansion d'un complexe minier international",
+            subtitle: "",
+            images: [
+                "assets/trigon-metals-1.jpg",
+                "assets/trigon-metals-2.jpg"
+            ],
+            content: `<p>En 2020, j'ai été mandaté par Trigon Metals, une société minière canadienne venant d'acquérir l'ancienne mine de Kombat (cuivre, plomb, argent) en Namibie, pour piloter le redémarrage de l'usine de traitement.</p>
+<p>Dans un premier temps, j'ai mis à profit mon expertise technique et mon réseau d'ingénieurs pour :</p>
+<ul>
+<li>Diagnostiquer l'état des équipements existants de l'usine historique,</li>
+<li>Définir les besoins en nouveaux équipements,</li>
+<li>Contribuer à la remise en route complète de l'usine, dans un délai record et avec un budget parfaitement maîtrisé.</li>
+</ul>
+<p></p>
+<p>Après le succès de cette première phase, une mission stratégique d'expansion m'a été confiée :</p>
+<ul>
+<li>Optimisation des rendements et amélioration des teneurs en amont du traitement,</li>
+<li>Recherche active d'opportunités de croissance externe,</li>
+<li>Identification de gisements prometteurs au Maroc, ayant conduit à l'acquisition des permis de recherche et d'exploitation au Maroc et la mise en place d'une équipe d'exploration multidisciplinaire.</li>
+</ul>
+<p></p>
+<p>Ce projet représente un exemple concret de réussite dans la relance industrielle et l'expansion minière à l'échelle internationale, combinant vision stratégique, efficacité opérationnelle et développement de nouvelles opportunités.</p>`
+        },
+        en: {
+            title: "Strategic Management of the Restart and Expansion of an International Mining Complex",
+            subtitle: "",
+            images: [
+                "assets/trigon-metals-1.jpg",
+                "assets/trigon-metals-2.jpg"
+            ],
+            content: `<p>In 2020, I was commissioned by Trigon Metals, a Canadian mining company that had just acquired the former Kombat mine (copper, lead, silver) in Namibia, to lead the restart of the processing plant.</p>
+<p>Initially, I leveraged my technical expertise and my network of engineers to:</p>
+<ul>
+<li>Diagnose the condition of the existing equipment in the historic plant,</li>
+<li>Define the needs for new equipment,</li>
+<li>Contribute to the complete restart of the plant, in record time and with a perfectly controlled budget.</li>
+</ul>
+<p></p>
+<p>After the success of this first phase, I was entrusted with a strategic expansion mission:</p>
+<ul>
+<li>Optimization of yields and improvement of upstream processing grades,</li>
+<li>Active search for external growth opportunities,</li>
+<li>Identification of promising deposits in Morocco, leading to the acquisition of exploration and exploitation permits in Morocco and the establishment of a multidisciplinary exploration team.</li>
+</ul>
+<p></p>
+<p>This project is a concrete example of success in industrial recovery and mining expansion on an international scale, combining strategic vision, operational efficiency, and the development of new opportunities.</p>`
+        }
+    },
+    project3: {
+        fr: {
+            title: "Un Projet Pionnier : Réussir un Partenariat Public-Privé pour l'Infrastructure Agricole",
+            subtitle: "",
+            images: ["assets/nareva_holding_agr.jpeg"],
+            content: `<p>En 2006, le groupe m'a confié une mission stratégique au sein de NAREVA Holding, acteur majeur du développement de projets dans les secteurs de l'eau et des énergies renouvelables. Mon rôle était de piloter un projet novateur en partenariat public-privé (PPP) avec le gouvernement marocain et les agriculteurs. L'objectif : co-financer, concevoir, construire et exploiter un adducteur et un réseau de conduites permettant la distribution de 45 millions de m³ d'eau par an.</p>
+<p>Ce projet s'est rapidement imposé comme une première mondiale, étant le tout premier PPP dédié à l'infrastructure agricole. Son approche unique a attiré l'attention d'organismes internationaux, qui l'ont suivi de près en vue de sa duplication dans d'autres pays confrontés à des défis similaires en matière de gestion de l'eau.</p>
+<p>Mon rôle dans cette initiative était multidisciplinaire et couvrait plusieurs aspects clés. J'ai tout d'abord supervisé la structuration du financement, assurant la viabilité économique du projet tout en sécurisant l'implication des différents partenaires. Ensuite, j'ai dirigé la conception et la construction du réseau d'adduction, garantissant le respect des délais et des normes techniques. Une autre étape cruciale a été la création de la filiale dédiée à l'exploitation de l'infrastructure, avec une structure actionnariale multiple. J'ai ainsi assuré la gestion de ses conseils d'administration et supervisé son bon fonctionnement opérationnel. Enfin, j'ai pris en charge la gestion de l'exploitation, veillant à la pérennité et à l'efficacité du projet sur le long terme.</p>
+<p>Ce projet a non seulement permis de répondre aux besoins en eau des agriculteurs, mais il a également ouvert la voie à une nouvelle approche du développement des infrastructures agricoles, prouvant que le modèle du PPP pouvait être une solution efficace et durable pour relever les défis hydriques mondiaux.</p>`
+        },
+        en: {
+            title: "A Pioneering Project: Succeeding in a Public-Private Partnership for Agricultural Infrastructure",
+            subtitle: "",
+            images: ["assets/nareva_holding_agr.jpeg"],
+            content: `<p>In 2006, the group entrusted me with a strategic mission within NAREVA Holding, a major player in project development in the water and renewable energy sectors. My role was to lead an innovative public-private partnership (PPP) project with the Moroccan government and farmers. The objective: co-finance, design, build, and operate a water supply system and pipeline network allowing the distribution of 45 million m³ of water per year.</p>
+<p>This project quickly established itself as a world first, being the very first PPP dedicated to agricultural infrastructure. Its unique approach attracted the attention of international organizations, who closely followed it with a view to replicating it in other countries facing similar water management challenges.</p>
+<p>My role in this initiative was multidisciplinary and covered several key aspects. First, I supervised the structuring of the financing, ensuring the economic viability of the project while securing the involvement of the various partners. Next, I led the design and construction of the supply network, ensuring compliance with deadlines and technical standards. Another crucial step was the creation of the subsidiary dedicated to the operation of the infrastructure, with a multiple shareholder structure. I thus managed its boards of directors and supervised its proper operational functioning. Finally, I took charge of the management of operations, ensuring the sustainability and efficiency of the project over the long term.</p>
+<p>This project not only met the water needs of farmers, but also paved the way for a new approach to the development of agricultural infrastructure, proving that the PPP model could be an effective and sustainable solution to global water challenges.</p>`
+        }
+    },
+    project4: {
+        fr: {
+            title: "Transformer l'Industrie de l'Acier : De la Dépendance à l'Autonomie Industrielle",
+            subtitle: "",
+            images: [
+                "assets/sonasid-1.jpeg",
+                "assets/sonasid-2.jpeg"
+            ],
+            content: `<p>En 2003, la société Sonasid, qui exploitait un laminoir transformant des billettes importées en fer à béton pour la construction, faisait face à une problématique majeure : la forte fluctuation du prix des billettes à l'achat, alors que le prix du fer à béton devait rester stable pour préserver l'économie marocaine. Son président m'a alors confié la mission de définir une stratégie durable pour remédier à cette situation.</p>
+<p>La solution retenue a été la construction d'une aciérie électrique capable de transformer un million de tonnes de ferraille par an en billettes, couplée à un laminoir permettant leur conversion en fer à béton. Ce projet ambitieux représentait un double défi : convaincre les actionnaires et le fournisseur national d'électricité, puis mener simultanément la gestion de la construction et la préparation de l'équipe d'exploitation. En seulement deux ans, l'aciérie a été construite et son démarrage a été un franc succès.</p>
+<p>Cette réussite a non seulement renforcé l'autonomie industrielle de Sonasid, mais elle a également attiré l'attention du géant mondial de l'acier, ArcelorMittal, qui a pris une participation de 50 % dans la société, consolidant ainsi sa position sur le marché.</p>`
+        },
+        en: {
+            title: "Transforming the Steel Industry: From Dependence to Industrial Autonomy",
+            subtitle: "",
+            images: [
+                "assets/sonasid-1.jpeg",
+                "assets/sonasid-2.jpeg"
+            ],
+            content: `<p>In 2003, Sonasid, which operated a rolling mill transforming imported billets into rebar for construction, faced a major challenge: the strong fluctuation in billet purchase prices, while the price of rebar had to remain stable to preserve the Moroccan economy. Its president then entrusted me with the mission of defining a sustainable strategy to remedy this situation.</p>
+<p>The chosen solution was the construction of an electric steel mill capable of transforming one million tons of scrap per year into billets, coupled with a rolling mill allowing their conversion into rebar. This ambitious project represented a double challenge: convincing shareholders and the national electricity supplier, then simultaneously managing the construction and preparing the operating team. In just two years, the steel mill was built and its startup was a resounding success.</p>
+<p>This achievement not only strengthened Sonasid's industrial autonomy, but also attracted the attention of the world steel giant, ArcelorMittal, which took a 50% stake in the company, thus consolidating its position in the market.</p>`
+        }
+    },
+    project5: {
+        fr: {
+            title: "De la Matière Première à l'Excellence Industrielle : Réinventer la Valorisation du Zinc",
+            subtitle: "",
+            images: [
+                "assets/zinc-processing-1.jpeg",
+                "assets/zinc-processing-2.jpeg"
+            ],
+            content: `<p>En 1999, le management de Managem Group m'a confié un projet stratégique visant à valoriser un minerai de carbonate de zinc exploité par une association marocaine. Ce minerai, acheté auprès d'artisans locaux, était traité thermiquement pour produire un concentré de zinc ne dépassant pas 55 %, souvent difficile à écouler sur le marché. Cette situation entraînait des retards de paiement pour les artisans et pesait lourdement sur l'économie sociale de la région.</p>
+<p>Ma mission était double : développer un procédé permettant d'obtenir un produit à haute valeur ajoutée et en forte demande, tout en garantissant la viabilité économique du projet sans perturber la vie des artisans. Après une étude approfondie, nous avons conçu un procédé hydrométallurgique innovant permettant de transformer le minerai en oxyde de zinc de haute pureté et à haute surface spécifique. Ce produit a ensuite été homologué auprès des grandes industries du pneumatique, de la cosmétique et de la pharmacie, assurant ainsi un débouché stable et profitable.</p>
+<p>Ce succès s'est concrétisé par la construction d'une usine qui non seulement a sécurisé les revenus des artisans, mais a aussi renforcé le positionnement de la région dans la chaîne de valeur industrielle.</p>`
+        },
+        en: {
+            title: "From Raw Material to Industrial Excellence: Reinventing Zinc Valorization",
+            subtitle: "",
+            images: [
+                "assets/zinc-processing-1.jpeg",
+                "assets/zinc-processing-2.jpeg"
+            ],
+            content: `<p>In 1999, the management of Managem Group entrusted me with a strategic project to enhance the value of a zinc carbonate ore exploited by a Moroccan association. This ore, purchased from local artisans, was thermally treated to produce a zinc concentrate not exceeding 55%, which was often difficult to sell on the market. This situation led to payment delays for the artisans and weighed heavily on the social economy of the region.</p>
+<p>My mission was twofold: to develop a process to obtain a high value-added product in strong demand, while ensuring the economic viability of the project without disrupting the lives of the artisans. After an in-depth study, we designed an innovative hydrometallurgical process to transform the ore into high-purity, high-surface-area zinc oxide. This product was then approved by major industries in tires, cosmetics, and pharmaceuticals, ensuring a stable and profitable outlet.</p>
+<p>This success resulted in the construction of a plant that not only secured the artisans' income, but also strengthened the region's position in the industrial value chain.</p>`
+        }
+    },
+    project6: {
+        fr: {
+            title: "Révolutionner la Valorisation du Cobalt : De l'Impasse Technique à la Réussite Industrielle",
+            subtitle: "",
+            images: ["assets/cobalt-processing.jpeg"],
+            content: `<p>En 1993, le management de Managem Group m'a confié une mission de grande envergure : trouver une solution pour une mine produisant un concentré de cobalt invendable en raison de sa forte teneur en éléments nuisibles. Ce défi, qui s'est étalé sur cinq années, a nécessité une approche méthodique alliant recherche, innovation et mise en œuvre industrielle.</p>
+<p>Après une étude approfondie, j'ai proposé un procédé permettant de purifier le concentré, suivi de la construction d'un pilote pour valider cette solution.</p>
+<p>Fort du succès de cette phase expérimentale, le projet s'est concrétisé par la construction d'une usine à grande échelle, marquant ainsi une avancée majeure pour la valorisation du cobalt et le développement de la mine</p>`
+        },
+        en: {
+            title: "Revolutionizing Cobalt Valorization: From Technical Deadlock to Industrial Success",
+            subtitle: "",
+            images: ["assets/cobalt-processing.jpeg"],
+            content: `<p>In 1993, the management of Managem Group entrusted me with a major mission: to find a solution for a mine producing a cobalt concentrate that was unsellable due to its high content of harmful elements. This challenge, which spanned five years, required a methodical approach combining research, innovation, and industrial implementation.</p>
+<p>After an in-depth study, I proposed a process to purify the concentrate, followed by the construction of a pilot plant to validate this solution.</p>
+<p>Thanks to the success of this experimental phase, the project materialized with the construction of a large-scale plant, marking a major breakthrough for cobalt valorization and the development of the mine.</p>`
+        }
+    }
+};
+
+// --- Gestion de la langue ---
+let currentLang = 'fr';
+
+// Détecter la langue préférée depuis localStorage
+if (localStorage.getItem('majilias-lang')) {
+    currentLang = localStorage.getItem('majilias-lang');
+}
+
+const i18n = {
+    fr: {
+        home: "Accueil",
+        about: "À propos",
+        services: "Services",
+        contact: "Nous contacter",
+        copyright: "© 2023 Majilias Inc. Tous droits réservés."
+    },
+    en: {
+        home: "Home",
+        about: "About",
+        services: "Services",
+        contact: "Contact us",
+        copyright: "© 2023 Majilias Inc. All rights reserved."
+    }
+};
+
+function translatePage() {
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (i18n[currentLang][key]) {
+            el.textContent = i18n[currentLang][key];
+        }
+    });
+}
+
+function setLang(lang) {
+    currentLang = lang;
+    renderDetail();
+    translatePage();
+    document.getElementById('lang-fr').classList.toggle('active', lang === 'fr');
+    document.getElementById('lang-en').classList.toggle('active', lang === 'en');
+    localStorage.setItem('majilias-lang', lang);
+}
+document.getElementById('lang-fr').onclick = () => setLang('fr');
+document.getElementById('lang-en').onclick = () => setLang('en');
+
+document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('lang-fr').classList.toggle('active', currentLang === 'fr');
+    document.getElementById('lang-en').classList.toggle('active', currentLang === 'en');
+    translatePage();
+});
+
+// --- Rendu dynamique ---
+function renderDetail() {
+    const params = new URLSearchParams(window.location.search);
+    const id = params.get('id');
+    if (!id || !details[id]) {
+        document.getElementById('detail-title').textContent = 'Contenu introuvable';
+        document.getElementById('detail-content').innerHTML = '<p>Aucun contenu à afficher pour cet identifiant.</p>';
+        document.getElementById('detail-images').innerHTML = '';
+        document.getElementById('detail-subtitle').textContent = '';
+        return;
+    }
+    const data = details[id][currentLang];
+    document.getElementById('detail-title').textContent = data.title;
+    document.getElementById('detail-subtitle').textContent = data.subtitle || '';
+    document.getElementById('detail-content').innerHTML = data.content;
+    document.getElementById('detail-images').innerHTML = (data.images||[]).map(src => `<img src="${src}" alt="">`).join('');
+
+    // Add click event listeners to images
+    const images = document.querySelectorAll('.detail-images img');
+    images.forEach((img, index) => {
+        img.addEventListener('click', () => {
+            openGallery(images, index);
+        });
+    });
+}
+
+// Gallery functionality
+const galleryModal = document.getElementById('gallery-modal');
+const galleryImage = document.getElementById('gallery-image');
+const closeGallery = document.querySelector('.gallery-close');
+const prevButton = document.getElementById('prev-image');
+const nextButton = document.getElementById('next-image');
+let currentImages = [];
+let currentIndex = 0;
+
+function openGallery(images, startIndex) {
+    currentImages = Array.from(images);
+    currentIndex = startIndex;
+    showGalleryImage();
+    galleryModal.style.display = 'block';
+    document.body.style.overflow = 'hidden';
+}
+
+function showGalleryImage() {
+    galleryImage.src = currentImages[currentIndex].src;
+    galleryImage.alt = currentImages[currentIndex].alt;
+    updateNavigationButtons();
+}
+
+function updateNavigationButtons() {
+    prevButton.disabled = currentIndex === 0;
+    nextButton.disabled = currentIndex === currentImages.length - 1;
+}
+
+prevButton.addEventListener('click', () => {
+    if (currentIndex > 0) {
+        currentIndex--;
+        showGalleryImage();
+    }
+});
+
+nextButton.addEventListener('click', () => {
+    if (currentIndex < currentImages.length - 1) {
+        currentIndex++;
+        showGalleryImage();
+    }
+});
+
+closeGallery.addEventListener('click', () => {
+    galleryModal.style.display = 'none';
+    document.body.style.overflow = 'auto';
+});
+
+galleryModal.addEventListener('click', (e) => {
+    if (e.target === galleryModal) {
+        galleryModal.style.display = 'none';
+        document.body.style.overflow = 'auto';
+    }
+});
+
+// Keyboard navigation
+document.addEventListener('keydown', (e) => {
+    if (galleryModal.style.display === 'block') {
+        if (e.key === 'ArrowLeft' && currentIndex > 0) {
+            currentIndex--;
+            showGalleryImage();
+        } else if (e.key === 'ArrowRight' && currentIndex < currentImages.length - 1) {
+            currentIndex++;
+            showGalleryImage();
+        } else if (e.key === 'Escape') {
+            galleryModal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+    }
+});
+
+renderDetail();
+translatePage();
+</script>
+</body>
+</html> 
