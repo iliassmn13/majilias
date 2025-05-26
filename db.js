@@ -1,7 +1,7 @@
 const { Pool } = require('pg');
 
 const pool = new Pool({
-  user: 'iliassmn13',
+  user: 'majilias',
   host: 'db.ovtwdvccjotkwrndmcwn.supabase.co',
   database: 'majilias contact',
   password: 'Majdouline@2', // Mets ici le mot de passe de ta base Supabase
