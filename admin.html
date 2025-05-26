@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Administration - Majilias Inc.</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-blue: #0A2463;
+            --secondary-blue: #3E5C76;
+            --accent-orange: #FB3640;
+            --light-gray: #F5F5F5;
+            --dark-gray: #333333;
+            --white: #FFFFFF;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        body {
+            background-color: var(--light-gray);
+            color: var(--dark-gray);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        header {
+            background-color: var(--primary-blue);
+            color: var(--white);
+            padding: 1rem 0;
+            margin-bottom: 2rem;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .contacts-table {
+            width: 100%;
+            background-color: var(--white);
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--light-gray);
+        }
+
+        th {
+            background-color: var(--primary-blue);
+            color: var(--white);
+            font-weight: 600;
+        }
+
+        tr:hover {
+            background-color: var(--light-gray);
+        }
+
+        .delete-btn {
+            background-color: var(--accent-orange);
+            color: var(--white);
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .delete-btn:hover {
+            background-color: #e0313a;
+        }
+
+        .message-cell {
+            max-width: 300px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .no-contacts {
+            text-align: center;
+            padding: 2rem;
+            color: var(--secondary-blue);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Administration - Messages de Contact</h1>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="contacts-table">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Nom</th>
+                        <th>Email</th>
+                        <th>Téléphone</th>
+                        <th>Pays</th>
+                        <th>Profil</th>
+                        <th>Message</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="contacts-table-body">
+                    <!-- Les contacts seront insérés ici dynamiquement -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        // Fonction pour charger les contacts
+        async function loadContacts() {
+            try {
+                const response = await fetch('http://localhost:3001/api/contacts');
+                const data = await response.json();
+                
+                const tbody = document.getElementById('contacts-table-body');
+                tbody.innerHTML = '';
+
+                if (data.contacts.length === 0) {
+                    tbody.innerHTML = `
+                        <tr>
+                            <td colspan="8" class="no-contacts">
+                                Aucun message de contact pour le moment
+                            </td>
+                        </tr>
+                    `;
+                    return;
+                }
+
+                data.contacts.forEach(contact => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${new Date(contact.date_creation).toLocaleString()}</td>
+                        <td>${contact.prenom} ${contact.nom}</td>
+                        <td>${contact.email}</td>
+                        <td>${contact.telephone || '-'}</td>
+                        <td>${contact.pays || '-'}</td>
+                        <td>${contact.profil}</td>
+                        <td class="message-cell" title="${contact.message}">${contact.message}</td>
+                        <td>
+                            <button class="delete-btn" onclick="deleteContact(${contact.id})">
+                                Supprimer
+                            </button>
+                        </td>
+                    `;
+                    tbody.appendChild(row);
+                });
+            } catch (error) {
+                console.error('Erreur lors du chargement des contacts:', error);
+            }
+        }
+
+        // Fonction pour supprimer un contact
+        async function deleteContact(id) {
+            if (!confirm('Êtes-vous sûr de vouloir supprimer ce contact ?')) {
+                return;
+            }
+
+            try {
+                const response = await fetch(`http://localhost:3001/api/contacts/${id}`, {
+                    method: 'DELETE'
+                });
+                const data = await response.json();
+                
+                if (data.success) {
+                    loadContacts(); // Recharger la liste
+                } else {
+                    alert('Erreur lors de la suppression du contact');
+                }
+            } catch (error) {
+                console.error('Erreur lors de la suppression:', error);
+                alert('Erreur lors de la suppression du contact');
+            }
+        }
+
+        // Charger les contacts au chargement de la page
+        document.addEventListener('DOMContentLoaded', loadContacts);
+    </script>
+</body>
+</html> 
