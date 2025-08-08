@@ -133,74 +133,28 @@
     </div>
 
     <script>
-        // Fonction pour charger les contacts
-        async function loadContacts() {
-            try {
-                const response = await fetch('http://localhost:3001/api/contacts');
-                const data = await response.json();
-                
-                const tbody = document.getElementById('contacts-table-body');
-                tbody.innerHTML = '';
-
-                if (data.contacts.length === 0) {
-                    tbody.innerHTML = `
-                        <tr>
-                            <td colspan="8" class="no-contacts">
-                                Aucun message de contact pour le moment
-                            </td>
-                        </tr>
-                    `;
-                    return;
-                }
-
-                data.contacts.forEach(contact => {
-                    const row = document.createElement('tr');
-                    row.innerHTML = `
-                        <td>${new Date(contact.date_creation).toLocaleString()}</td>
-                        <td>${contact.prenom} ${contact.nom}</td>
-                        <td>${contact.email}</td>
-                        <td>${contact.telephone || '-'}</td>
-                        <td>${contact.pays || '-'}</td>
-                        <td>${contact.profil}</td>
-                        <td class="message-cell" title="${contact.message}">${contact.message}</td>
-                        <td>
-                            <button class="delete-btn" onclick="deleteContact(${contact.id})">
-                                Supprimer
-                            </button>
-                        </td>
-                    `;
-                    tbody.appendChild(row);
-                });
-            } catch (error) {
-                console.error('Erreur lors du chargement des contacts:', error);
-            }
-        }
-
-        // Fonction pour supprimer un contact
-        async function deleteContact(id) {
-            if (!confirm('Êtes-vous sûr de vouloir supprimer ce contact ?')) {
-                return;
-            }
-
-            try {
-                const response = await fetch(`http://localhost:3001/api/contacts/${id}`, {
-                    method: 'DELETE'
-                });
-                const data = await response.json();
-                
-                if (data.success) {
-                    loadContacts(); // Recharger la liste
-                } else {
-                    alert('Erreur lors de la suppression du contact');
-                }
-            } catch (error) {
-                console.error('Erreur lors de la suppression:', error);
-                alert('Erreur lors de la suppression du contact');
-            }
-        }
-
-        // Charger les contacts au chargement de la page
-        document.addEventListener('DOMContentLoaded', loadContacts);
+        // Message d'information pour l'administration
+        document.addEventListener('DOMContentLoaded', function() {
+            const tbody = document.getElementById('contacts-table-body');
+            tbody.innerHTML = `
+                <tr>
+                    <td colspan="8" class="no-contacts">
+                        <div style="text-align: center; padding: 2rem;">
+                            <h3>Configuration requise</h3>
+                            <p>Pour afficher les messages de contact, vous devez configurer une base de données.</p>
+                            <p>Options recommandées :</p>
+                            <ul style="text-align: left; max-width: 400px; margin: 1rem auto;">
+                                <li><strong>Formspree</strong> : Service gratuit pour recevoir les emails</li>
+                                <li><strong>Netlify Forms</strong> : Si vous déployez sur Netlify</li>
+                                <li><strong>Firebase</strong> : Base de données gratuite de Google</li>
+                                <li><strong>Supabase</strong> : Alternative gratuite à Firebase</li>
+                            </ul>
+                            <p><small>Consultez la documentation pour configurer votre solution préférée.</small></p>
+                        </div>
+                    </td>
+                </tr>
+            `;
+        });
     </script>
 </body>
 </html> 
